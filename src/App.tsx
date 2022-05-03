@@ -1,81 +1,33 @@
 import React from 'react';
-import { Layout, Input, Spin, Space, Button } from 'antd';
-import {
-  ApolloClient,
-  InMemoryCache,
-  gql
-} from "@apollo/client";
-import fileSaver from 'file-saver';
-const { Header } = Layout;
-const { Search } = Input;
+import { Layout } from 'antd';
+import UserProposals from './components/UserProposals';
+import Header from './components/Header/Header';
+import { addressContext } from './adress.context';
+import Footer from './components/Footer';
+import GettingStarted from './components/GettingStarted';
+const { Content } = Layout;
 
 const App: React.FC = () => {
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [votedAdresses, setVotedAdresses] = React.useState([]);
+  const [address, setAddress] = React.useState<string | null>(null);
+  const value = { address, setAddress }
 
-  const client = new ApolloClient({
-    uri: 'https://hub.snapshot.org/graphql',
-    cache: new InMemoryCache()
-  });
-
-  const onSearchHandler = (proposalId: string) => {
-    setIsLoading(true);
-    setVotedAdresses([]);
-    client
-      .query({
-        query: gql`
-        query Votes {
-          votes (
-            first: 1000000000
-            where: {
-              proposal: "${proposalId}"
-            }
-            orderBy: "created",
-            orderDirection: desc
-          ) {
-            voter
-          }
-        }
-    `
-      })
-      .then(({ data }) => {
-        const filteredVotes = data.votes.map((el: any) => el.voter);
-        setVotedAdresses(filteredVotes);
-        setIsLoading(false);
-      });
-  }
-
-  const downloadHandler = () => {
-    const text = votedAdresses.join('\n');
-
-    const file = new Blob([text], { type: 'text/plain;charset=utf-8' });
-    fileSaver.saveAs(file, `.txt`);
-  }
+  React.useEffect(() => {
+    const payload = localStorage.getItem('address') as string;
+    setAddress(payload);
+  }, [])
 
   return (
-    <Layout>
-      <Header style={{ backgroundColor: "#1890ff" }}>
-        <h1>Snapshot Parser</h1>
-      </Header>
-      <Space style={{ padding: 40 }} size='middle' align='center' direction='vertical'>
-        <Search
-          placeholder="Enter Snapshot VoteId"
-          enterButton="Search"
-          size="large"
-          onSearch={onSearchHandler}
-        />
-        {isLoading && <Spin />}
-        {!isLoading
-          && votedAdresses.length !== 0
-          && (
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <span>Finded {votedAdresses.length} adresses. Download it now?</span>
-              <Button onClick={downloadHandler} style={{ marginTop: 10 }}>Download .txt</Button>
-            </div>
-          )
-        }
-      </Space>
-    </Layout>
+    <addressContext.Provider value={value}>
+      <Header />
+      <Layout className='container'>
+        <Content style={{ backgroundColor: "#fff" }}>
+          {address
+            ? <UserProposals />
+            : <GettingStarted />}
+        </Content>
+      </Layout>
+      <Footer />
+    </addressContext.Provider >
   );
 }
 

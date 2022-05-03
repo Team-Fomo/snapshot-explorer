@@ -1,0 +1,11 @@
+.container {
+  padding: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.container > span {
+  margin-right: 10px;
+}

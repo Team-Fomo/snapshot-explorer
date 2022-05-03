@@ -1,0 +1,48 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  border-radius: 15px;
+  border: 2px solid #e5e7eb;
+  margin-bottom: 20px;
+  transition: all 0.2 ease;
+}
+
+.container:hover {
+  border: 2px solid #000;
+}
+
+.main_info {
+  display: flex;
+  margin-bottom: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.main_info > div {
+  display: flex;
+  align-items: center;
+}
+
+.main_info > span {
+  font-size: 16px;
+  height: 26px;
+  vertical-align: middle;
+  padding: 0 12px;
+  border-radius: 14px;
+  line-height: 24px;
+  color: #fff;
+  background-color: rgb(124 58 237);
+}
+
+.content {
+  max-height: 200px;
+}
+
+.body {
+  margin: 0;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

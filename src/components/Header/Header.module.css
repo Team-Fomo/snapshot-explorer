@@ -1,0 +1,32 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 60px;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+}
+
+.title img {
+  width: 50px;
+}
+
+.title h1 {
+  margin-bottom: 0;
+}
+
+.address {
+  border: 1px solid #e0e0e0;
+  color: #000;
+  border-radius: 23px;
+  outline: none;
+  padding: 5px 15px;
+  display: flex;
+  align-items: center;
+}
+.address span {
+  margin-left: 5px;
+}
